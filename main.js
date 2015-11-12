@@ -13,14 +13,13 @@ var App = {
 				App.backCanvas.height = App.video.videoHeight / 4;
 				App.backContext = App.backCanvas.getContext('2d');
 
-				var w = 300 / 4 * 0.8,
-					h = 270 / 4 * 0.8;
+				App.prop = { w: 800, h: 870};
 
 				App.comp = [{
-					x: (App.video.videoWidth / 4 - w) / 2,
-					y: (App.video.videoHeight / 4 - h) / 2,
-					width: w,
-					height: h,
+					x: (App.video.videoWidth / 4 - App.prop.w) / 2,
+					y: (App.video.videoHeight / 4 - App.prop.h) / 2,
+					width: App.prop.w,
+					height: App.prop.h,
 				}];
 
 				App.drawToCanvas();
@@ -54,6 +53,7 @@ var App = {
 
 		backCtx.drawImage(video, 0, 0, App.backCanvas.width, App.backCanvas.height);
 
+		// ccv = bit trained to recnogise faces
 		comp = ccv.detect_objects(App.ccv = App.ccv || {
 			canvas: App.backCanvas,
 			cascade: cascade,
@@ -65,23 +65,24 @@ var App = {
 			App.comp = comp;
 		}
 
+		// App.comp = all faces identified
 		for (i = App.comp.length; i--; ) {
-			ctx.drawImage(App.glasses, (App.comp[i].x - w / 2) * m, (App.comp[i].y - w / 2) * m, (App.comp[i].width + w) * m, (App.comp[i].height + w) * m);
-			// HAT: ctx.drawImage(App.glasses, (App.comp[i].x + w ) * m, (App.comp[i].y - App.comp[i].height  ) * m, (App.comp[i].width + w) * m, (App.comp[i].height + w) * m);
-
+			ctx.drawImage(App.theProp, (App.comp[i].x - (App.comp[i].width/2)) * m , (App.comp[i].y - (((App.prop.h/App.prop.w) * App.comp[i].width/2) )) * m ,
+											App.comp[i].width*2 * m, (App.prop.h/App.prop.w) * App.comp[i].width*2 * m	);
 		}
 	},
+	changeProp: function(propName) {
+		App.theProp = new Image();
+		App.theProp.src = 'images/props/'+propName+'.png';
+	},
 	takePicture: function() {
-		// save canvas image as data url (png format by default)
-        // var dataURL = App.canvas.toDataURL();
-        // document.getElementById('photo').src = dataURL;
+		// Start new GIF recording
 		App.gif = new GIF({
 		  workers: 2,
 		  quality: 10
 		});
 
 		// add an image element
-		// gif.addFrame(imageElement);
 		App.current_frame = 0;
 
 		App.gif.on('finished', function(blob) {
@@ -110,8 +111,8 @@ var App = {
 	}
 };
 
-App.glasses = new Image();
-App.glasses.src = '../images/props/pink-glasses.png';
+App.theProp = new Image();
+App.theProp.src = 'images/props/pink-glasses.png';
 
 
 App.init = function() {

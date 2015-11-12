@@ -18,6 +18,18 @@ body {
 	margin-top: -15px;
 }
 
+#btn-make_gif {
+	display: inline-block;
+	background: pink;
+	cursor: pointer;
+	color: black;
+	padding: 10px;
+}
+#btn-make_gif:hover {
+	color:pink;
+	background: black;
+}
+
 #output {
 	width: auto;
 	height: 100%;
@@ -34,5 +46,19 @@ body {
 	display: inline-block;
 	margin-right: 10px;
 	text-align: center;
+}
 
+#props {
+	width: 100px;
+	float: right;
+	margin: 20px;
+	padding: 20px;
+	background: #fff;
+}
+
+#props img {
+	width: 100%;
+	height: auto;
+	display: inline-block;
+	cursor: pointer;
 }
